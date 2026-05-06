@@ -35,6 +35,46 @@
     gap: 16px;
   }
 
+  /* Top nav */
+  .top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #a78bfa, #f472b6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .nav-buttons {
+    display: flex;
+    gap: 8px;
+  }
+  .nav-btn {
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    color: #e2e8f0;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.2);
+  }
+  .nav-btn.active {
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    border-color: #a78bfa;
+  }
+
   /* Stats bar */
   .stats {
     display: grid;
@@ -64,6 +104,15 @@
   .stat .value.accent { color: #a78bfa; }
   .stat .value.good { color: #34d399; }
   .stat .value.warn { color: #fbbf24; }
+
+  /* Game view */
+  .game-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 16px;
+  }
+  .game-view.hidden { display: none; }
 
   /* Word display area */
   .word-area {
@@ -202,6 +251,124 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
+  /* Leaderboard view */
+  .leaderboard-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 16px;
+    overflow: hidden;
+  }
+  .leaderboard-view.hidden { display: none; }
+
+  .leaderboard-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 20px;
+    overflow: hidden;
+  }
+
+  .leaderboard-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #f8fafc;
+  }
+
+  .leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+  .leaderboard-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .leaderboard-list::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+  }
+  .leaderboard-list::-webkit-scrollbar-thumb {
+    background: rgba(167,139,250,0.4);
+    border-radius: 10px;
+  }
+  .leaderboard-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(167,139,250,0.6);
+  }
+
+  .leaderboard-entry {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 14px;
+    animation: slideIn 0.4s ease-out;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .rank {
+    font-weight: 800;
+    font-size: 1.2rem;
+    width: 32px;
+    text-align: center;
+    background: linear-gradient(135deg, #a78bfa, #f472b6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .rank.gold {
+    font-size: 1.4rem;
+  }
+
+  .entry-name {
+    font-weight: 600;
+    color: #f8fafc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .entry-wpm {
+    font-weight: 700;
+    color: #a78bfa;
+    font-size: 1.1rem;
+    min-width: 50px;
+    text-align: right;
+  }
+
+  .entry-medal {
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+  }
+
+  .empty-leaderboard {
+    text-align: center;
+    padding: 40px 20px;
+    color: #94a3b8;
+  }
+  .empty-leaderboard p {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+
+  .leaderboard-actions {
+    display: flex;
+    gap: 10px;
+  }
+
   /* Game over screen */
   .overlay {
     position: fixed;
@@ -254,11 +421,63 @@
     margin-top: 4px;
   }
 
+  /* Name input modal */
+  .name-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.92);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 101;
+    padding: 20px;
+  }
+  .name-modal-overlay.active { display: flex; }
+  .name-modal {
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 28px;
+    max-width: 320px;
+    width: 100%;
+  }
+  .name-modal h3 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    color: #f8fafc;
+  }
+  .name-modal input {
+    width: 100%;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(167,139,250,0.4);
+    border-radius: 10px;
+    color: #f8fafc;
+    font-size: 1rem;
+    margin-bottom: 16px;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  .name-modal input:focus {
+    border-color: #a78bfa;
+    background: rgba(255,255,255,0.12);
+  }
+  .name-modal-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .name-modal-buttons button {
+    flex: 1;
+  }
+
   /* Mobile tweaks */
   @media (max-width: 480px) {
     .app { padding: 10px; gap: 10px; }
     .stat .value { font-size: 1rem; }
     .stat .label { font-size: 0.6rem; }
+    .nav-title { font-size: 1.1rem; }
   }
   @media (max-height: 600px) {
     .word-area { min-height: 140px; }
@@ -267,53 +486,81 @@
 </head>
 <body>
   <div class="app">
-    <div class="stats">
-      <div class="stat">
-        <div class="label">Time</div>
-        <div class="value warn" id="timeStat">60</div>
-      </div>
-      <div class="stat">
-        <div class="label">Score</div>
-        <div class="value accent" id="scoreStat">0</div>
-      </div>
-      <div class="stat">
-        <div class="label">WPM</div>
-        <div class="value good" id="wpmStat">0</div>
-      </div>
-      <div class="stat">
-        <div class="label">Acc</div>
-        <div class="value" id="accStat">100%</div>
+    <div class="top-nav">
+      <div class="nav-title">⚡ Mausam</div>
+      <div class="nav-buttons">
+        <button class="nav-btn active" id="gameNavBtn">Game</button>
+        <button class="nav-btn" id="leaderboardNavBtn">🏆 Board</button>
       </div>
     </div>
 
-    <div class="word-area">
-      <div class="source-tag" id="sourceTag">Wikipedia</div>
-      <div class="word-display" id="wordDisplay">
-        <span class="loader"></span>
+    <!-- GAME VIEW -->
+    <div class="game-view" id="gameView">
+      <div class="stats">
+        <div class="stat">
+          <div class="label">Time</div>
+          <div class="value warn" id="timeStat">60</div>
+        </div>
+        <div class="stat">
+          <div class="label">Score</div>
+          <div class="value accent" id="scoreStat">0</div>
+        </div>
+        <div class="stat">
+          <div class="label">WPM</div>
+          <div class="value good" id="wpmStat">0</div>
+        </div>
+        <div class="stat">
+          <div class="label">Acc</div>
+          <div class="value" id="accStat">100%</div>
+        </div>
       </div>
-      <div class="hint" id="hint">Loading words from Wikipedia…</div>
+
+      <div class="word-area">
+        <div class="source-tag" id="sourceTag">Wikipedia</div>
+        <div class="word-display" id="wordDisplay">
+          <span class="loader"></span>
+        </div>
+        <div class="hint" id="hint">Loading words from Wikipedia…</div>
+      </div>
+
+      <div class="input-area">
+        <input
+          type="text"
+          id="typeInput"
+          placeholder="Type the word here…"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          inputmode="text"
+          disabled
+        />
+      </div>
+
+      <div class="controls">
+        <button class="btn-secondary" id="skipBtn">Skip</button>
+        <button class="btn-primary" id="restartBtn">Restart</button>
+      </div>
     </div>
 
-    <div class="input-area">
-      <input
-        type="text"
-        id="typeInput"
-        placeholder="Type the word here…"
-        autocomplete="off"
-        autocorrect="off"
-        autocapitalize="off"
-        spellcheck="false"
-        inputmode="text"
-        disabled
-      />
-    </div>
-
-    <div class="controls">
-      <button class="btn-secondary" id="skipBtn">Skip</button>
-      <button class="btn-primary" id="restartBtn">Restart</button>
+    <!-- LEADERBOARD VIEW -->
+    <div class="leaderboard-view hidden" id="leaderboardView">
+      <div class="leaderboard-container">
+        <div class="leaderboard-title">🏆 Top Typists</div>
+        <div class="leaderboard-list" id="leaderboardList">
+          <div class="empty-leaderboard">
+            <p>No scores yet. Start typing!</p>
+          </div>
+        </div>
+      </div>
+      <div class="leaderboard-actions">
+        <button class="btn-secondary" id="clearLeaderboardBtn">Clear Board</button>
+        <button class="btn-primary" id="backToGameBtn">Back</button>
+      </div>
     </div>
   </div>
 
+  <!-- Game Over Modal -->
   <div class="overlay" id="overlay">
     <div class="modal">
       <h2>⏱️ Time's Up!</h2>
@@ -335,16 +582,36 @@
           <div class="value" id="finalAcc">0%</div>
         </div>
       </div>
-      <button class="btn-primary" id="playAgainBtn">Try Again Nerd</button>
+      <button class="btn-primary" id="playAgainBtn">Save & Play Again</button>
+    </div>
+  </div>
+
+  <!-- Name Input Modal -->
+  <div class="name-modal-overlay" id="nameModalOverlay">
+    <div class="name-modal">
+      <h3>✨ Save Your Score</h3>
+      <input
+        type="text"
+        id="playerNameInput"
+        placeholder="Enter your name…"
+        maxlength="20"
+        autocomplete="off"
+      />
+      <div class="name-modal-buttons">
+        <button class="btn-secondary" id="skipNameBtn">Skip</button>
+        <button class="btn-primary" id="submitNameBtn">Save</button>
+      </div>
     </div>
   </div>
 
 <script>
 (() => {
   // ========= Config =========
-  const GAME_DURATION = 60; // seconds
+  const GAME_DURATION = 60;
   const MIN_WORD_LEN = 3;
   const MAX_WORD_LEN = 12;
+  const LEADERBOARD_KEY = "mausam_leaderboard";
+  const MAX_ENTRIES = 50;
 
   // ========= State =========
   let wordQueue = [];
@@ -358,8 +625,13 @@
   let timerId = null;
   let gameRunning = false;
   let fetchingMore = false;
+  let lastGameStats = null;
 
   // ========= DOM =========
+  const gameView = document.getElementById("gameView");
+  const leaderboardView = document.getElementById("leaderboardView");
+  const gameNavBtn = document.getElementById("gameNavBtn");
+  const leaderboardNavBtn = document.getElementById("leaderboardNavBtn");
   const wordDisplay = document.getElementById("wordDisplay");
   const input = document.getElementById("typeInput");
   const timeStat = document.getElementById("timeStat");
@@ -371,9 +643,105 @@
   const restartBtn = document.getElementById("restartBtn");
   const overlay = document.getElementById("overlay");
   const playAgainBtn = document.getElementById("playAgainBtn");
+  const nameModalOverlay = document.getElementById("nameModalOverlay");
+  const playerNameInput = document.getElementById("playerNameInput");
+  const submitNameBtn = document.getElementById("submitNameBtn");
+  const skipNameBtn = document.getElementById("skipNameBtn");
+  const leaderboardList = document.getElementById("leaderboardList");
+  const clearLeaderboardBtn = document.getElementById("clearLeaderboardBtn");
+  const backToGameBtn = document.getElementById("backToGameBtn");
+
+  // ========= Leaderboard Storage =========
+  function loadLeaderboard() {
+    try {
+      const data = localStorage.getItem(LEADERBOARD_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch (e) {
+      console.warn("Failed to load leaderboard:", e);
+      return [];
+    }
+  }
+
+  function saveLeaderboard(entries) {
+    try {
+      localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(entries));
+    } catch (e) {
+      console.warn("Failed to save leaderboard:", e);
+    }
+  }
+
+  function addScoreToLeaderboard(name, wpm, score, accuracy) {
+    const entries = loadLeaderboard();
+    entries.push({
+      name: (name || "Anonymous").trim().slice(0, 20),
+      wpm: Math.round(wpm),
+      score: score,
+      accuracy: accuracy,
+      timestamp: Date.now()
+    });
+    // Sort by WPM descending, keep top entries
+    entries.sort((a, b) => b.wpm - a.wpm);
+    entries.splice(MAX_ENTRIES);
+    saveLeaderboard(entries);
+  }
+
+  function renderLeaderboard() {
+    const entries = loadLeaderboard();
+    if (entries.length === 0) {
+      leaderboardList.innerHTML = `
+        <div class="empty-leaderboard">
+          <p>No scores yet. Complete a game to appear here!</p>
+        </div>
+      `;
+      return;
+    }
+
+    leaderboardList.innerHTML = entries.map((entry, idx) => {
+      const rank = idx + 1;
+      let medal = "";
+      if (rank === 1) medal = "🥇";
+      else if (rank === 2) medal = "🥈";
+      else if (rank === 3) medal = "🥉";
+
+      return `
+        <div class="leaderboard-entry">
+          <div class="rank ${rank <= 3 ? 'gold' : ''}">#${rank}</div>
+          <div class="entry-name">${entry.name}</div>
+          <div class="entry-wpm">${entry.wpm}</div>
+          <div class="entry-medal">${medal}</div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  // ========= Navigation =========
+  function switchToGame() {
+    gameView.classList.remove("hidden");
+    leaderboardView.classList.add("hidden");
+    gameNavBtn.classList.add("active");
+    leaderboardNavBtn.classList.remove("active");
+    if (gameRunning) input.focus();
+  }
+
+  function switchToLeaderboard() {
+    gameView.classList.add("hidden");
+    leaderboardView.classList.remove("hidden");
+    gameNavBtn.classList.remove("active");
+    leaderboardNavBtn.classList.add("active");
+    renderLeaderboard();
+  }
+
+  gameNavBtn.addEventListener("click", switchToGame);
+  leaderboardNavBtn.addEventListener("click", switchToLeaderboard);
+  backToGameBtn.addEventListener("click", switchToGame);
+  clearLeaderboardBtn.addEventListener("click", () => {
+    if (confirm("Clear all leaderboard entries?")) {
+      saveLeaderboard([]);
+      renderLeaderboard();
+    }
+  });
 
   // ========= Wikipedia fetcher =========
-  // Fetches random article extracts from Wikipedia, splits into clean words.
   async function fetchWordsFromWikipedia(batchSize = 5) {
     const url =
       "https://en.wikipedia.org/w/api.php?" +
@@ -397,9 +765,8 @@
 
     for (const id in pages) {
       const extract = pages[id].extract || pages[id].title || "";
-      // Split into clean alphabetic words
       const tokens = extract
-        .replace(/\([^)]*\)/g, " ") // remove (parenthetical)
+        .replace(/\([^)]*\)/g, " ")
         .split(/[\s\u00A0]+/)
         .map(t => t.replace(/[^A-Za-z'-]/g, "").toLowerCase())
         .filter(t =>
@@ -410,7 +777,6 @@
       collected.push(...tokens);
     }
 
-    // De-duplicate within this batch and shuffle
     const unique = [...new Set(collected)];
     for (let i = unique.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -427,7 +793,6 @@
       wordQueue.push(...words);
     } catch (e) {
       console.warn("Wikipedia fetch failed, using fallback:", e);
-      // Fallback list so the game keeps running offline / on errors
       wordQueue.push(
         "wikipedia","article","random","encyclopedia","language",
         "history","science","computer","keyboard","practice",
@@ -464,14 +829,12 @@
     input.value = "";
     await ensureWords();
     if (wordQueue.length === 0) {
-      // Wait briefly and retry
       setTimeout(nextWord, 300);
       return;
     }
     currentWord = wordQueue.shift();
     wordDisplay.classList.remove("completed");
     renderWord();
-    // Pre-fetch more in the background
     if (wordQueue.length < 8) ensureWords();
   }
 
@@ -499,8 +862,9 @@
   function tick() {
     timeLeft -= 1;
     timeStat.textContent = timeLeft;
-    timeStat.classList.toggle("warn", timeLeft > 10);
-    if (timeLeft <= 10) {
+    if (timeLeft > 10) {
+      timeStat.style.color = "";
+    } else {
       timeStat.style.color = "#f87171";
     }
     updateWPM();
@@ -511,15 +875,24 @@
     gameRunning = false;
     clearInterval(timerId);
     input.disabled = true;
-    document.getElementById("finalScore").textContent = score;
-    document.getElementById("finalWords").textContent = wordsCompleted;
-    document.getElementById("finalWpm").textContent = wpmStat.textContent;
-    document.getElementById("finalAcc").textContent = accStat.textContent;
+
+    const finalWpm = parseInt(wpmStat.textContent) || 0;
+    const finalAcc = accStat.textContent;
+    const finalScore = score;
+    const finalWords = wordsCompleted;
+
+    document.getElementById("finalScore").textContent = finalScore;
+    document.getElementById("finalWords").textContent = finalWords;
+    document.getElementById("finalWpm").textContent = finalWpm;
+    document.getElementById("finalAcc").textContent = finalAcc;
+
+    lastGameStats = { wpm: finalWpm, score: finalScore, accuracy: finalAcc };
     overlay.classList.add("active");
   }
 
   async function startGame() {
     overlay.classList.remove("active");
+    nameModalOverlay.classList.remove("active");
     score = 0;
     wordsCompleted = 0;
     totalKeystrokes = 0;
@@ -536,6 +909,7 @@
     hint.textContent = "Loading words from Wikipedia…";
     input.disabled = true;
     input.value = "";
+    lastGameStats = null;
 
     await ensureWords();
     await nextWord();
@@ -546,6 +920,7 @@
     gameRunning = true;
     clearInterval(timerId);
     timerId = setInterval(tick, 1000);
+    switchToGame();
   }
 
   // ========= Input handling =========
@@ -553,13 +928,11 @@
     if (!gameRunning || !currentWord) return;
     let val = input.value;
 
-    // If user pressed space and word matches, complete it
     if (val.endsWith(" ")) {
       const trimmed = val.trim();
       if (trimmed === currentWord) {
         onWordCompleted();
       } else {
-        // wrong submission via space - reset typed
         typedSoFar = trimmed;
         input.value = trimmed;
         renderWord();
@@ -567,7 +940,6 @@
       return;
     }
 
-    // Track keystroke accuracy on additions
     if (val.length > typedSoFar.length) {
       const newChar = val[val.length - 1];
       const expected = currentWord[val.length - 1];
@@ -579,11 +951,9 @@
     typedSoFar = val;
     renderWord();
 
-    // Auto-advance when typed exactly matches the word
     if (typedSoFar === currentWord) {
       onWordCompleted();
     }
-    // If typed length exceeds word length, trim
     if (typedSoFar.length > currentWord.length) {
       typedSoFar = typedSoFar.slice(0, currentWord.length);
       input.value = typedSoFar;
@@ -591,7 +961,6 @@
     }
   });
 
-  // Keep keyboard up on mobile by refocusing
   input.addEventListener("blur", () => {
     if (gameRunning) setTimeout(() => input.focus(), 50);
   });
@@ -601,10 +970,32 @@
     nextWord();
     input.focus();
   });
-  restartBtn.addEventListener("click", () => startGame());
-  playAgainBtn.addEventListener("click", () => startGame());
 
-  // Tap anywhere on word area to focus input (mobile keyboard)
+  restartBtn.addEventListener("click", () => startGame());
+
+  // Name submission
+  playAgainBtn.addEventListener("click", () => {
+    playerNameInput.value = "";
+    playerNameInput.focus();
+    nameModalOverlay.classList.add("active");
+  });
+
+  submitNameBtn.addEventListener("click", () => {
+    const name = playerNameInput.value.trim() || "Anonymous";
+    if (lastGameStats) {
+      addScoreToLeaderboard(name, lastGameStats.wpm, lastGameStats.score, lastGameStats.accuracy);
+    }
+    startGame();
+  });
+
+  skipNameBtn.addEventListener("click", () => {
+    startGame();
+  });
+
+  playerNameInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") submitNameBtn.click();
+  });
+
   document.querySelector(".word-area").addEventListener("click", () => {
     if (gameRunning) input.focus();
   });
